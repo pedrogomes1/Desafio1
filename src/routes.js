@@ -1,9 +1,9 @@
 const { Router } = require('express')
 
-const ProjectController = require('./controllers/ProjetcsControllers');
-const { projects } = require('./controllers/ProjetcsControllers')
-
+const ProjectController = require('./controllers/ProjectsControllers');
+const { checkId } = require('./middleware/checkId')
 const routes = Router()
+
 
 //Middleware global
 routes.use((req, res, next) => {
@@ -11,24 +11,6 @@ routes.use((req, res, next) => {
   console.count('Numero total')
   
   return next()
-})
-
-//Middleware local
-function checkId(req, res, next)  {
-
-  const { id } = req.params
-
-  const project = projects.find(project => project.id == id)
-
-  if(!project){
-    return res.json({error: 'Erro, id not found'})
-  }
-  
-  next()
-}
-
-routes.get('/', (req, res) => {
-  return res.json({message:'Foi'})
 })
 
 routes.post('/projects', ProjectController.newProject)
